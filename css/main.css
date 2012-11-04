@@ -1,0 +1,65 @@
+/* Some resets */
+body, h1 { margin: 0; padding: 0; }
+
+body { min-width: 1000px }
+/* Utilites */
+
+.cf:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/* Layout */
+header {
+	background: rgba(124, 155, 95, 1);
+	border-bottom: solid 2px;
+	border-color: rgba(38, 46, 31, 0.7);
+	padding: 10px;
+}
+
+nav {
+	float: left;
+	min-width: 144px;
+	width: 15%;
+	padding: 5px 0;
+	background-color: rgba(111, 124, 100, 1);
+	box-shadow: 1px 1px 6px #888;
+}
+
+#tabs-container {
+	float: left;
+	width: 80%;
+	padding: 0 2.5%;
+}
+
+
+/* Modules */
+/* header */
+header h1 .main-title {
+	color: rgba(255, 255, 255, 0.2);
+}
+
+header h1 .slogan {
+	color: rgba(0, 0, 0, 0.5);
+	font: italic bold 15px/20px Times;
+}
+
+/* nav */
+nav a {
+	display: block;
+	height: 40px;
+	text-align: center;
+	text-decoration: none;
+	background: #454;
+	color: rgba(38, 46, 31, 0.7);
+	font: bold 15px/40px Helvetica;
+}
+
+/* circularMenu */
+.container {
+	background: gray;
+	height: 400px;
+}

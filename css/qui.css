@@ -1,0 +1,18 @@
+/* 
+ * qui.circularMenu 
+ */
+.qui-circularMenu {
+	background: rgba(74, 107, 58, 0.45);
+}
+
+.qui-circularMenu-button {
+	cursor: pointer;
+	background: rgba(100, 100, 100, 1);
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	margin-left: -10px;
+	margin-top: -10px;
+	color: white;
+	font-size: 10px;
+}

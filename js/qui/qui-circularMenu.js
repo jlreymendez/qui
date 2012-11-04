@@ -37,7 +37,7 @@
 			baseClass: "qui-circularMenu",
 			buttons: [],
 			buttonsOptions: {
-				markup: "<span id='{{id}}' class='{{class}}'>{{text}}</span>",
+				markup: "<span id='{{id}}' class='{{htmlClass}}'>{{text}}</span>",
 				offset: 80,
 				closeOnClick: false
 			},
@@ -60,6 +60,7 @@
 			// init state
 			this.isOpen = false;
 			this.insideClick = false;
+			this.inAnimation = false;
 
 			// prepare styles
 			this._menuStyling();
@@ -144,15 +145,26 @@
 		},
 
 		_close: function() {
+			// don't do anything while animation is in progress
+			if (this.inAnimation) {
+				return this;
+			}
+
 			// update state
-			this.isOpen = false;
+			this.inAnimation = true;
 
 			// animate
 			this.$buttons.hide();
 			this.$target.animate(
-				{ 'top': this.$target.position().top + this.options.radius,  'left': this.$target.position().left + this.options.radius, 'height': 0, 'width': 0 },
+				{ 'top': this.$target.position().top + this.options.radius,  'left': this.$target.position().left + this.options.radius, 'height': 0, 'width': 0 , 'z-index': 2},
 				{ complete: $.proxy( this._closeComplete, this ) }
 			);
+		},
+
+		_closeComplete: function() {
+			// update state
+			this.inAnimation = false;
+			this.isOpen = false;
 		},
 
 		_contextmenuHandler: function (e) {
@@ -168,18 +180,24 @@
 		_menuStyling: function(){
 			// initial styles
 			this.element.css({ 'position': 'relative' });
-			this.$target.css({ 'position': 'relative', 'border-radius': this.options.radius, 'width': 0, 'height': 0 })
+			this.$target.css({ 'position': 'absolute', 'border-radius': this.options.radius, 'width': 0, 'height': 0 })
 						.addClass( this.options.baseClass );
 		},
 
 		_open: function(e) {
+			// don't do anything while animation is in progress
+			if (this.inAnimation) {
+				return this;
+			}
+
+
 			// ToDo - layerX, layerY are deprecated find different solution.
 			// Firefox has an issue with offsetX and OffsetY
 			var x = e.originalEvent.layerX,
 				y = e.originalEvent.layerY;
 
 			// update state
-			this.isOpen = true;
+			this.inAnimation = true;
 
 			// animate
 			this.$target.css({ 'top': y, 'left': x });
@@ -190,6 +208,11 @@
 		},
 
 		_openComplete: function() {
+			// update state
+			this.inAnimation = false;
+			this.isOpen = true;
+
+			// show buttons
 			this.$buttons.show();
 		}
 	});
