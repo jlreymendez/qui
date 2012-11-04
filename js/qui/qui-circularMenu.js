@@ -1,8 +1,8 @@
-/*! qui.circularMenu v0.1.0 // jlreymendez © 11-03-2012 */
+/*! qui.circularMenu v0.1.2 // jlreymendez © 11-04-2012 */
 /*! Licensed MIT */
 
 /* @requires
- *		jQuery, jQuery.ui, Hogan, Math
+ *		jQuery, jQuery.ui.widget, jQuery.ui.position, Hogan, Math
  */
 /* @usage
  *		Call circularMenu function on the element that will hold the circular context menu functionality
@@ -61,6 +61,7 @@
 			this.isOpen = false;
 			this.insideClick = false;
 			this.inAnimation = false;
+			this.diameter = this.options.radius * 2;
 
 			// prepare styles
 			this._menuStyling();
@@ -190,19 +191,25 @@
 				return this;
 			}
 
-
-			// ToDo - layerX, layerY are deprecated find different solution.
-			// Firefox has an issue with offsetX and OffsetY
-			var x = e.originalEvent.layerX,
-				y = e.originalEvent.layerY;
+			var position;
 
 			// update state
 			this.inAnimation = true;
 
-			// animate
-			this.$target.css({ 'top': y, 'left': x });
+			// Set size so position is calculated correctly
+			this.$target.css({  visibility: 'hidden', width: this.diameter, height: this.diameter });
+
+			this.$target.position({
+				my: 'center',
+				of: e,
+				collision: "fit"
+			});
+
+			// reset size and animate
+			position = this.$target.position();
+			this.$target.css({ visibility: 'visible', top: position.top + this.options.radius, left: position.left + this.options.radius, width: 0, height: 0 });
 			this.$target.animate(
-				{ 'top': y - this.options.radius, 'left': x - this.options.radius, 'width': this.options.radius * 2, 'height': this.options.radius * 2 },
+				{ 'top': position.top, 'left': position.left, 'width': this.options.radius * 2, 'height': this.options.radius * 2 },
 				{ complete: $.proxy( this._openComplete, this ) }
 			);
 		},
