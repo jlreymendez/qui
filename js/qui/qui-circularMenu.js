@@ -1,5 +1,5 @@
 /*! qui.circularMenu v0.1.2 // jlreymendez © 11-04-2012 */
-/*! Licensed MIT */
+/*! Licensed MIT: https://github.com/jlreymendez/qui/blob/master/License.txt */
 
 /* @requires
  *		jQuery, jQuery.ui.widget, jQuery.ui.position, Hogan, Math
