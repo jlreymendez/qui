@@ -15,16 +15,26 @@
 	<section id="main" class="cf">
 		<nav>
 			<a href="#circularMenu">qui.circularMenu</a>
+			<a href="#rateIt">qui.rateIt</a>
 		</nav>
 
 		<section id="tabs-container">
-			<h2 id="#circularMenu">qui.cicularMenu Demo</h2>
-			<p><strong>Instructions:</strong> Right click on the gray container to open the circular context menu.</p>
-			<div id="context-container" class="container">
-				<div id="context-menu">
+			<div>
+				<h2 id="#circularMenu">qui.cicularMenu Demo</h2>
+				<p><strong>Instructions:</strong> Right click on the gray container to open the circular context menu.</p>
+				<div id="context-container" class="container">
+					<div id="context-menu">
+					</div>
+					<div class="circularMenu-content">
+					</div>
 				</div>
-				<div class="circularMenu-content">
-				</div>
+			</div>
+			<div>
+				<h2 id="rateIt">qui.rateIt Demo</h2>
+				<p><strong>Instructions:</strong> Click on one slot to rate from 1 to 10.</p>
+				<div id="rateIt-wrapper"></div>
+				<div id="rateIt-console">You have rated <span>4</span>.</div>
+				<button id="rateIt-clear">Clear</button>
 			</div>
 		</section>
 	</section>
@@ -45,6 +55,7 @@
 
 	<!-- qui libraries -->
 	<script src="js/qui/qui-circularMenu.js"></script>
+	<script src="js/qui/qui-rateIt.js"></script>
 
 	<!-- init code -->
 	<script src="js/demo.js"></script>

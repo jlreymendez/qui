@@ -1,5 +1,5 @@
-/* 
- * qui.circularMenu 
+/*
+ * qui.circularMenu
  */
 .qui-circularMenu {
 	background: rgba(74, 107, 58, 0.45);
@@ -15,4 +15,24 @@
 	margin-top: -10px;
 	color: white;
 	font-size: 10px;
+}
+
+/*
+ * qui.rateIt
+ */
+.qui-rateIt {
+
+}
+
+.qui-rateIt-star {
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	border-radius: 9px;
+	border: 2px solid rgba(124, 155, 95, 1);
+	margin-left: 4px;
+}
+
+.qui-rateIt-star.qui-state-on {
+	background-color:  rgba(146, 175, 71, 1);
 }

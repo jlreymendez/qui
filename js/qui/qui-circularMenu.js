@@ -11,7 +11,7 @@
  *		baseClass			Class that will be added to the circularMenu html element, it will also be prepended to buttons.
  *		buttons				Array of button objects that will be added to the circular menu on creation.
  *			id					Id to be added to the button html element when using default markup.
- *			class				Class that will be added to the button html element when using default markup.
+ *			htmlClass		    Class that will be added to the button html element when using default markup.
  *			text				Inner html for the markup when using default markup.
  *			callback			Callback to handle click event.
  *			context				Context for the click event callback.
@@ -110,7 +110,7 @@
 							'top': this.options.radius - this.options.buttonsOptions.offset * Math.cos(radiansDiff * i),
 							'left': this.options.radius - this.options.buttonsOptions.offset * Math.sin(radiansDiff * i)
 						});
-				
+
 				// add button to state
 				this.$buttons = this.$buttons.add($button);
 
