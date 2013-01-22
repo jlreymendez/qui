@@ -3,19 +3,21 @@
 $(document).ready( function () {
 
 	/* qui.circularMenu demo code */
-	$("#context-container").circularMenu({
-		target: "#context-menu",
-		buttons: [
-			{ id: "button-1", htmlClass:"oddButton", text:"1", callback: circularMenuButtonHandler, context: $("#context-container")},
-			{ id: "button-2", htmlClass:"evenButton", text:"2", callback: circularMenuButtonHandler, context: $("#context-container")  },
-			{ id: "button-3", htmlClass:"oddButton", text:"3", callback: circularMenuButtonHandler, context: $("#context-container") },
-			{ id: "button-4", htmlClass:"evenButton", text:"4", callback: circularMenuButtonHandler, context: $("#context-container") },
-			{ id: "button-5", htmlClass:"oddButton", text:"5", callback: circularMenuButtonHandler, context: $("#context-container") }
-		]
-	});
+	var $contextContainer = $("#context-container")
+			.circularMenu({
+				target: "#context-menu",
+				buttons: [
+					{ id: "button-1", htmlClass:"oddButton", text:"1" },
+					{ id: "button-2", htmlClass:"evenButton", text:"2" },
+					{ id: "button-3", htmlClass:"oddButton", text:"3" },
+					{ id: "button-4", htmlClass:"evenButton", text:"4" },
+					{ id: "button-5", htmlClass:"oddButton", text:"5" }
+				]
+			})
+			.on("circularmenubuttonclicked", circularMenuButtonHandler);
 
-	function circularMenuButtonHandler (e) {
-		this.children(".circularMenu-content").append(e.target.innerHTML);
+	function circularMenuButtonHandler (e, data) {
+		$contextContainer.children(".circularMenu-content").append(data.button);
 	}
 
 	/* end qui.circularMenu */

@@ -8,20 +8,19 @@
  *		Call circularMenu function on the element that will hold the circular context menu functionality
  */
 /* @options
- *		baseClass			Class that will be added to the circularMenu html element, it will also be prepended to buttons.
- *		buttons				Array of button objects that will be added to the circular menu on creation.
- *			id					Id to be added to the button html element when using default markup.
- *			htmlClass		    Class that will be added to the button html element when using default markup.
- *			text				Inner html for the markup when using default markup.
- *			callback			Callback to handle click event.
- *			context				Context for the click event callback.
- *			[optionals]			More values can be passed and those can be use with custom markups.
- *		buttonsOptions		Options for buttons to be created.
- *			markup				String holding the hogan template to be created for each button.
- *			offset				Position away from the center of the circular menu.
- *			closeOnClick		Close circular menu on clicking a button.
- *		radius				Radius of the circular menu.
- *		target				Target element that will be transformed in the circularMenu.
+ *		baseClass				Class that will be added to the circularMenu html element, it will also be prepended to buttons.
+ *		buttons					Array of button objects that will be added to the circular menu on creation.
+ *			id						Id to be added to the button html element when using default markup.
+ *			htmlClass		    	Class that will be added to the button html element when using default markup.
+ *			text					Inner html for the markup when using default markup.
+ *			[optionals]				More values can be passed and those can be use with custom markups.
+ *		buttonsOptions			Options for buttons to be created.
+ *			markup					String holding the hogan template to be created for each button.
+ *			offset					Position away from the center of the circular menu.
+ *			closeOnClick			Close circular menu on clicking a button.
+ *			singleEventHandler 		True if button click triggers single event, false if trigger appends button number.
+ *		radius					Radius of the circular menu.
+ *		target					Target element that will be transformed in the circularMenu.
  */
 (function ($, hogan) {
 
@@ -39,7 +38,8 @@
 			buttonsOptions: {
 				markup: "<span id='{{id}}' class='{{htmlClass}}'>{{text}}</span>",
 				offset: 80,
-				closeOnClick: false
+				closeOnClick: false,
+				singleEventHandler: true
 			},
 			radius: 100,
 			target: ""
@@ -47,39 +47,39 @@
 
 		// constructor
 		_create: function() {
+			/* if no target was found do nothing */
 			this.$target = $(this.options.target).eq(0);
-
-			// if no target was found do nothing
 			if (!this.$target.length) {
 				return this;
 			}
 
-			// hide during creation
+			/* hide during creation */
 			this.$target.hide();
 
-			// init state
+			/* init state */
 			this.isOpen = false;
 			this.insideClick = false;
 			this.inAnimation = false;
 			this.diameter = this.options.radius * 2;
 
-			// prepare styles
+			/* prepare styles */
 			this._menuStyling();
 
-			// create buttons
+			/* create buttons */
 			this._buttonsCreation();
 
-			// open event
+			/* events */
 			this._on({
-				contextmenu: "_contextmenuHandler",
-				click: "_clickHandler"
+				contextmenu: this._evContextMenu, // open event
+				click: this._evClick
 			});
+			this._on( this.$buttons, { click: this._evButtonClick });
 
-			// show after finishing
+			/* show after finishing */
 			this.$target.show();
 		},
 
-		// private methods
+		/* private methods */
 		_buttonsCreation: function() {
 			var $button,
 				buttonTmpl,
@@ -114,35 +114,12 @@
 				// add button to state
 				this.$buttons = this.$buttons.add($button);
 
-				// context and callback
-				context = this.options.buttons[i].context || $button;
-				callback = this.options.buttons[i].callback || dummyCallback;
-
-				// click binding
-				$button.on("click", { callback: callback, context: context }, $.proxy(this._buttonCallbackProxy, this));
+				// add button data
+				$button.data("qui-circularMenu-button", i + 1);
 			}
 
 			// hide buttons
 			this.$buttons.hide();
-		},
-
-		_buttonCallbackProxy: function(e) {
-			// avoid clicks on buttons closing menu
-			this.insideClick = true && !this.options.buttonsOptions.closeOnClick;
-
-			// proxy callback
-			e.data.callback.call( e.data.context, e );
-		},
-
-		_clickHandler: function (e) {
-			if ((!this.isOpen) || (this.insideClick)) {
-				// update state
-				this.insideClick = false;
-
-				return false;
-			}
-
-			this._close(e);
 		},
 
 		_close: function() {
@@ -168,21 +145,12 @@
 			this.isOpen = false;
 		},
 
-		_contextmenuHandler: function (e) {
-			e.preventDefault();
-
-			if (this.isOpen) {
-				this._close(e);
-			} else {
-				this._open(e);
-			}
-		},
-
 		_menuStyling: function(){
 			// initial styles
 			this.element.css({ 'position': 'relative' });
-			this.$target.css({ 'position': 'absolute', 'border-radius': this.options.radius, 'width': 0, 'height': 0 })
-						.addClass( this.options.baseClass );
+			this.$target
+				.css({ 'position': 'absolute', 'border-radius': this.options.radius, 'width': 0, 'height': 0 })
+				.addClass( this.options.baseClass );
 		},
 
 		_open: function(e) {
@@ -221,6 +189,38 @@
 
 			// show buttons
 			this.$buttons.show();
+		},
+
+		/* event handlers */
+		_evButtonClick: function(e) {
+			var $target = $(e.target),
+				buttonNr = $target.data("qui-circularMenu-button"),
+				evType = "button" +
+					(this.options.buttonsOptions.singleEventHandler ? "" : buttonNr) +
+					"clicked";
+
+			this._trigger(evType, e, { button: buttonNr });
+		},
+
+		_evClick: function (e) {
+			if ((!this.isOpen) || (this.insideClick)) {
+				// update state
+				this.insideClick = false;
+
+				return false;
+			}
+
+			this._close(e);
+		},
+
+		_evContextMenu: function (e) {
+			e.preventDefault();
+
+			if (this.isOpen) {
+				this._close(e);
+			} else {
+				this._open(e);
+			}
 		}
 	});
 
