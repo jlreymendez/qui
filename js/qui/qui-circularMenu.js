@@ -1,4 +1,4 @@
-/*! qui.circularMenu v0.1.2 // jlreymendez © 11-04-2012 */
+/*! qui.circularMenu v0.1.3 // jlreymendez © 01-22-2012 */
 /*! Licensed MIT: https://github.com/jlreymendez/qui/blob/master/License.txt */
 
 /* @requires
